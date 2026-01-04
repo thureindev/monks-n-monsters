@@ -149,6 +149,7 @@ body {
   margin-bottom: 10px;
   cursor: pointer;
 }
+
 .boat-action-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
@@ -170,15 +171,20 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* .boat-container:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-} */
-
 .boat-container.sailing {
   animation: sail 2s ease-in-out;
   pointer-events: none;
 }
+
+.boat-capacity-label {
+  color: #654321;
+  margin-top: 10px;
+}
+
+/* .boat-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+} */
 
 @keyframes sail {
   0%,

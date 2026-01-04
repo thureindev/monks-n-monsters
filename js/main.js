@@ -493,11 +493,13 @@ class ViewController {
       originContent: document.getElementById('origin-content'),
       destinationContent: document.getElementById('destination-content'),
       boat: document.getElementById('boat'),
-      boatActionBtn: document.getElementById('boat-action-btn'),
       river: document.getElementById('river'),
       messageBox: document.getElementById('message-box'),
       overlay: document.getElementById('overlay'),
       timer: document.getElementById('timer'),
+      // TODO: refactor view elements
+      boatActionBtn: document.getElementById('boat-action-btn'),
+      boatCapacityLabel: document.getElementById('boat-capacity-label'),
     };
     this.animationDuration = 3000; // Feast animation duration
     this.voyageDuration = 2000; // Voyage animation duration
@@ -572,6 +574,8 @@ class ViewController {
     this.bindEvents();
     this.render();
     // this.startTimer();
+    // TODO: wrap function
+    this.elements.boatCapacityLabel.innerText = `Capacity: ${this.game.boatCapacity}`;
   }
 
   /**
