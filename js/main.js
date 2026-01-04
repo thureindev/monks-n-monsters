@@ -182,6 +182,7 @@ class Game {
     this.totalAvatars = numMonsters + numHumans;
     this.boatCapacity = boatCapacity;
     this.status = GameStatus.ONGOING;
+    this.tripCount = 0;
 
     this.avatars = [];
     this.boat = null;
@@ -200,6 +201,7 @@ class Game {
     this.totalAvatars = null;
     this.boatCapacity = null;
     this.status = null;
+    this.tripCount = null;
 
     this.avatars = [];
     this.boat = null;
@@ -236,6 +238,11 @@ class Game {
    * @description Initializes game with avatars and objects
    */
   initialize() {
+    // reset game status
+    this.status = GameStatus.ONGOING;
+    // reset trip counter
+    this.tripCount = 0;
+
     // Create docks
     this.dockOrigin = new Dock(Location.ORIGIN, this.totalAvatars);
     this.dockDestination = new Dock(Location.DESTINATION, this.totalAvatars);
@@ -317,6 +324,8 @@ class Game {
       avatar.setLocation(Location.RIVER);
     });
 
+    // Update boat trip counter
+    this.tripCount++;
     // Start voyage animation
     this.view.playVoyageAnimation(() => {
       // After animation completes
@@ -354,6 +363,7 @@ class Game {
       this.view.playWinAnimation();
       return true;
 
+      // TODO: prevent cheat in browser
       const monsters = this.dockDestination
         .getPassengers()
         .filter((a) => a.getType() === AvatarType.MONSTER).length;
@@ -519,7 +529,7 @@ class ViewController {
       const seconds = Math.floor((elapsed % 60000) / 1000);
       const milliseconds = elapsed % 1000;
 
-      this.displayGeekStats();
+      // this.displayGeekStats();
 
       this.elements.timer.textContent = `${String(minutes).padStart(
         2,
@@ -561,7 +571,7 @@ class ViewController {
   initialize() {
     this.bindEvents();
     this.render();
-    this.startTimer();
+    // this.startTimer();
   }
 
   /**
@@ -586,6 +596,8 @@ class ViewController {
       this.elements.destinationContent
     );
     this.renderBoat();
+    // TODO: optimize this view render.
+    this.elements.timer.textContent = `Boat Trips: ${this.game.tripCount}`;
   }
 
   displayGeekStats() {
@@ -772,7 +784,7 @@ class ViewController {
       this.isAnimating = false;
       const timeStr = this.getElapsedTime();
       this.showMessage(
-        `Game Over! The monsters feasted!\nTime: ${timeStr}`,
+        `Game Over! The monsters feasted!\n Boat trips: ${this.game.tripCount}`,
         'lose'
       );
     }, this.animationDuration);
@@ -785,7 +797,7 @@ class ViewController {
     this.stopTimer();
     const timeStr = this.getElapsedTime();
     this.showMessage(
-      `🥳🥳🥳🎉 Victory! All avatars safely crossed!\nTime: ${timeStr}`,
+      `🥳🥳🥳🎉 Victory! People safely crossed! People thank you. Monsters hate you.\n Boat trips: ${this.game.tripCount}`,
       'win'
     );
   }
