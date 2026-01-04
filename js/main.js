@@ -661,6 +661,9 @@ class ViewController {
     div.className = `avatar ${avatar.getType()}`;
     div.dataset.avatarId = avatar.getId();
 
+    /*
+    TODO: fix gif
+
     // Try to load image, fallback to emoji
     const img = document.createElement('img');
     const imageName = `${avatar.getType()}-idle.gif`;
@@ -670,8 +673,10 @@ class ViewController {
       // Fallback to emoji
       div.innerHTML = avatar.getType() === AvatarType.HUMAN ? '😐' : '👹';
     };
-
     div.appendChild(img);
+    */
+
+    div.innerHTML = avatar.getType() === AvatarType.HUMAN ? '😐' : '👹';
 
     // Add click handler
     if (!isOnBoat || this.game.boat.location !== Location.RIVER) {
