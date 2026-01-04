@@ -192,6 +192,24 @@ class Game {
     Game.#instance = this;
   }
 
+  // TODO: description
+  destroy() {
+    this.uuid = null;
+    this.numMonsters = null;
+    this.numHumans = null;
+    this.totalAvatars = null;
+    this.boatCapacity = null;
+    this.status = null;
+
+    this.avatars = [];
+    this.boat = null;
+    this.dockOrigin = null;
+    this.dockDestination = null;
+    this.view = null;
+
+    Game.#instance = null;
+  }
+
   /**
    * @static
    * @param {number} numMonsters - Number of monsters
@@ -281,17 +299,12 @@ class Game {
    * @description Handles boat click - initiates voyage
    */
   handleBoatClick() {
-    console.log('boat is clicked');
-    console.log(this);
-
     if (this.status !== GameStatus.ONGOING) return;
 
     if (!this.boat.canSail()) {
       this.view.showMessage('Someone needs to row the boat!', 'info');
-      console.log('finished showmessage now I return');
       return;
     }
-    console.log('I did not return');
 
     const voyageTo = this.boat.getDestinationLocation();
 
@@ -315,17 +328,12 @@ class Game {
       });
 
       this.view.render();
-
-      console.log('before game status');
-      console.log(this);
       this.handleGameStatus();
       // Check game status after 700ms pause
       // setTimeout(() => {
       //   this.handleGameStatus();
       // }, 700);
     });
-    console.log('after game status');
-    console.log(this);
   }
 
   /**
@@ -481,6 +489,18 @@ class ViewController {
     this.startTime = null;
   }
 
+  // TODO: description
+  destroy() {
+    this.game = null;
+    this.uuid = null;
+    this.elements = null;
+    this.animationDuration = null;
+    this.voyageDuration = null;
+    this.isAnimating = null;
+    this.timerInterval = null;
+    this.startTime = null;
+  }
+
   /**
    * @description Starts the game timer
    */
@@ -568,13 +588,7 @@ class ViewController {
       this.game.uuid
     } | View UUID: ${
       this.uuid
-    } | Boat Passengers: ${this.game.boat.getPassengerCount()} | Origin Dock: ${this.game.dockOrigin.getPassengerCount()} | Destination Dock: ${this.game.dockDestination.getPassengerCount()} | </p>`;
-
-    console.log(
-      `Game UUID: ${this.game.uuid} | View UUID: ${
-        this.uuid
-      } Boat Passengers: ${this.game.boat.getPassengerCount()} | Origin Dock: ${this.game.dockOrigin.getPassengerCount()} | Destination Dock: ${this.game.dockDestination.getPassengerCount()} |`
-    );
+    }</p><p style="color: black; font-size: 14px;">Boat Passengers: ${this.game.boat.getPassengerCount()} | Origin Dock: ${this.game.dockOrigin.getPassengerCount()} | Destination Dock: ${this.game.dockDestination.getPassengerCount()} | </p>`;
   }
 
   /**
@@ -825,7 +839,13 @@ class ViewController {
  * @description Orchestrates game initialization and UI updates
  */
 class GameController {
+  // TODO Description
   constructor() {
+    this.game = null;
+    this.view = null;
+  }
+  // TODO Description
+  destroy() {
     this.game = null;
     this.view = null;
   }
@@ -851,7 +871,6 @@ class GameController {
     this.game.view = this.view;
 
     console.log(this);
-
     console.log('view uuid');
     console.log(this.view.uuid);
     console.log('game uuid');
@@ -862,12 +881,18 @@ class GameController {
    * @description Restarts game with current configuration
    */
   restartGame() {
-    // console.log(this);
     if (this.game) {
       const { numMonsters, numHumans, boatCapacity } = this.game;
+      this.cleanGarbage();
       this.startNewGame(numMonsters, numHumans, boatCapacity);
     }
-    // console.log(this);
+  }
+
+  // TODO: description
+  cleanGarbage() {
+    this.game.destroy();
+    this.view.destroy();
+    this.destroy();
   }
 }
 
@@ -888,9 +913,7 @@ const overlay = document.getElementById('overlay');
 // Restart button
 const restartBtn = document.getElementById('restart-btn');
 restartBtn.addEventListener('click', () => {
-  gameController = new GameController();
-  // gameController.restartGame();
-  gameController.startNewGame();
+  gameController.restartGame();
 });
 
 // Open config modal
@@ -956,6 +979,7 @@ configForm.addEventListener('submit', (e) => {
   if (isValid) {
     configModal.classList.remove('show');
     overlay.classList.remove('show');
+    gameController.cleanGarbage();
     gameController.startNewGame(numMonsters, numHumans, boatCapacity);
   }
 });
