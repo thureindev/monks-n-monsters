@@ -724,7 +724,7 @@ class ViewController {
    */
   playFeastAnimation(predatorList, preyList) {
     this.isAnimating = true;
-    this.stopTimer();
+    // this.stopTimer();
 
     // Assign targets
     const targets = new Map();
@@ -772,7 +772,7 @@ class ViewController {
           predatorEl.style.zIndex = 100 + index;
         }
       });
-
+      // TODO: animation skipped not visible // could be async problem.
       this.updateAvatarImages(predatorList, 'monster-feast.gif', '😈');
       this.updateAvatarImages(preyList, 'human-deceased.gif', '🍖');
     }, 2000);
@@ -792,18 +792,25 @@ class ViewController {
         'lose'
       );
     }, this.animationDuration);
+
+    // TODO: refactor
+    this.elements.timer.textContent = `Game Over! The monsters feasted!\n Boat trips: ${this.game.tripCount}`;
   }
 
   /**
    * @description Plays win animation
    */
   playWinAnimation() {
-    this.stopTimer();
-    const timeStr = this.getElapsedTime();
+    // this.stopTimer();
+    // const timeStr = this.getElapsedTime();
+
     this.showMessage(
       `🥳🥳🥳🎉 Victory! People safely crossed! People thank you. Monsters hate you.\n Boat trips: ${this.game.tripCount}`,
       'win'
     );
+
+    // TODO: optimize this view render.
+    this.elements.timer.textContent = `🥳🥳🥳🎉 Victory! People safely crossed! People thank you. Monsters hate you.\n Boat trips: ${this.game.tripCount}`;
   }
 
   /**
