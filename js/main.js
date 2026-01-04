@@ -345,8 +345,15 @@ class Game {
     // Check win condition
     if (
       this.dockOrigin.isEmpty() &&
-      this.dockDestination.getPassengerCount() === this.totalAvatars
+      this.boat.location === Location.DESTINATION &&
+      this.dockDestination.getPassengerCount() +
+        this.boat.getPassengerCount() >=
+        this.totalAvatars
     ) {
+      this.status = GameStatus.WON;
+      this.view.playWinAnimation();
+      return true;
+
       const monsters = this.dockDestination
         .getPassengers()
         .filter((a) => a.getType() === AvatarType.MONSTER).length;
